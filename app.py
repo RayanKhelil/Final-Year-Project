@@ -637,10 +637,7 @@ modelDict = {}
 resultDict = {}
 ##Buttons
 def create_model(name=get_model_name()):
-    ticker = get_train_ticker()
-    startDate = get_train_start_date()
-    endDate = get_train_end_date()
-    #additional checks, like if start and end dates compatible
+    
     sm = StandardModel(ticker = get_train_ticker(), startDate=get_train_start_date(), endDate=get_train_end_date(), mediaBlacklist=get_train_media_blacklist(), timeWindow=get_time_window(), sentimentCalc=get_sentiment_calc(), tokenAlgo=get_token_algo(),
                         scaleType=get_scale_type(), smaRangeWindows=get_sma(), priceRangeWindow=get_price(), modelAlgo=get_model_algo(), classInput=get_class_input())
     modelDict.update({name: sm})

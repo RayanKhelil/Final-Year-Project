@@ -5,6 +5,7 @@ import logging
 
 
 #TODO custom tkinter implementation
+#TODO do correct widget types
 class AppGUI(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -25,7 +26,6 @@ class AppGUI(tk.Tk):
 
   
 #TODO validate/prepare inputs in get_functions. catch specicific exceptions to do relevant response (Showing error to user, can overlay text on grid)
-#TODO format better (show options/formatting, use drop downs and multiple choice...)
 
 class HomePage(tk.Frame):
     def __init__(self, master):
@@ -48,7 +48,7 @@ class CreationPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         display_hotbar(self, master, bg_mc='#00FF00')
-        #TODO model creation. 
+        #TODO Model gets
 
         labelTicker = tk.Label(self, text = "Input ticker: ")
         trainTicker = tk.Text(self, height=1, width=12)
@@ -58,9 +58,9 @@ class CreationPage(tk.Frame):
             return tempTicker
         
         labelTimeWindow = tk.Label(self, text = "Input time window: ")
-        timeWindow = tk.Text(self, height=1, width=12)
+        trainTimeWindow = tk.Text(self, height=1, width=12)
         def get_time_window():
-           tempTimeWindow = int(timeWindow.get("1.0", 'end-1c'))
+           tempTimeWindow = int(trainTimeWindow.get("1.0", 'end-1c'))
            return tempTimeWindow
         
         labelStartDate = tk.Label(self, text = "Input start date: ")        
@@ -88,25 +88,80 @@ class CreationPage(tk.Frame):
             tempSentimentCalc = tempSentimentCalc.split(",")
             return tempSentimentCalc
         
-        labelToken = tk.Label(self, text = "Use tokenisation?")
+        labelToken = tk.Label(self, text = "Use tokenisation?")#RADIO
         trainToken = tk.Text(self, height=1, width=12)
         def get_token_algo():
             tempToken = trainToken.get("1.0", 'end-1c')
             return tempToken
         
+        labelScale = tk.Label(self, text = "Enter scaletype")#RADIO
+        trainScale = tk.Text(self, height=1, width=12)
+        def get_scale_type():
+            tempScale = trainScale.get("1.0", 'end-1c')
+            return tempScale
 
-        # def get_scale_type():
+        labelSma = tk.Label(self, text= "Enter simple moving averages")
+        trainSma = tk.Text(self, height=1, width=12)
+        def get_sma():
+            tempSma = trainSma.get("1.0", 'end-1c')
+            return tempSma
+        
+        labelPrice = tk.Label(self, text= "Enter pricerange window")
+        trainPrice = tk.Text(self, height=1, width=12)
+        def get_price():
+            tempTPrice = trainPrice.get("1.0", 'end-1c')
+            return tempTPrice
 
-        # def get_sma():
+        labelModelAlgo = tk.Label(self, text= "Enter ModelAlgo")
+        trainModelAlgo = tk.Text(self, height=1, width=12)
+        def get_model_algo():
+            tempModelAlgo = trainModelAlgo.get("1.0", 'end-1c')
+            return tempModelAlgo
 
-        # def get_price():
+        labelClasses = tk.Label(self, text="Enter price classes")
+        trainClasses = tk.Text(self, height=1, width=12)
+        def get_class_input():
+            tempClasses = trainClasses.get("1.0", 'end-1c')
+            return tempClasses
 
-        # def get_model_algo():
+        labelModelName = tk.Label(self, text= "Enter model name")
+        trainModelName = tk.Text(self, height=1, width=12)
+        def get_model_name():
+            tempModelname = trainModelName.get("1.0", 'end-1c')
+            return tempModelname
 
-        # def get_class_input():
 
-        # def get_model_name():
+        #TODO Buttons to use above inputs
 
+
+        #grid them start row=2
+        labelTicker         .grid(row=2,column=0)
+        trainTicker         .grid(row=3,column=0)
+        labelTimeWindow     .grid(row=2,column=1)
+        trainTimeWindow     .grid(row=3,column=1)
+        labelStartDate      .grid(row=2,column=2)
+        trainStartDate      .grid(row=3,column=2) 
+        labelEndDate        .grid(row=2,column=3)
+        trainEndDate        .grid(row=3,column=3)
+        labelBlacklist      .grid(row=4,column=0)
+        trainBlacklist      .grid(row=5,column=0)
+        labelSentimentCalc  .grid(row=4,column=1)
+        trainSentimentCalc  .grid(row=5,column=1)
+        labelToken          .grid(row=4,column=2)
+        trainToken          .grid(row=5,column=2)
+
+        labelScale          .grid(row=6,column=0)
+        trainScale          .grid(row=7,column=0)
+        labelSma            .grid(row=6,column=1)
+        trainSma            .grid(row=7,column=1)
+        labelPrice          .grid(row=6,column=2)
+        trainPrice          .grid(row=7,column=2)
+        labelModelAlgo      .grid(row=6,column=3)
+        trainModelAlgo      .grid(row=7,column=3)
+        labelClasses        .grid(row=8,column=0)
+        trainClasses        .grid(row=9,column=0)
+        labelModelName      .grid(row=8,column=1)
+        trainModelName      .grid(row=9,column=1)
 
         self.pack(fill='x')
         
@@ -169,22 +224,22 @@ class UsagePage(tk.Frame):
         labelResultDict = tk.Label(self, text = app.resultDict.keys())
         
         
-        labelTicker.grid(row=2, column = 0)
-        useTicker.grid(row=3, column=0)
-        labelTimeWindow.grid(row=2, column = 1)
-        useTimeWindow.grid(row=3, column=1)
-        labelStartDate.grid(row=2, column = 2)
-        useStartDate.grid(row=3, column=2)
-        labelEndDate.grid(row=2, column = 3)
-        useEndDate.grid(row=3, column=3)
-        labelResultName.grid(row=4, column = 0)
-        resultName.grid(row=5, column=0)
-        labelResultNameList.grid(row=4, column = 1)
-        resultNameList.grid(row=5, column=1)
+        labelTicker         .grid(row=2, column=0)
+        useTicker           .grid(row=3, column=0)
+        labelTimeWindow     .grid(row=2, column=1)
+        useTimeWindow       .grid(row=3, column=1)
+        labelStartDate      .grid(row=2, column=2)
+        useStartDate        .grid(row=3, column=2)
+        labelEndDate        .grid(row=2, column=3)
+        useEndDate          .grid(row=3, column=3)
+        labelResultName     .grid(row=4, column=0)
+        resultName          .grid(row=5, column=0)
+        labelResultNameList .grid(row=4, column=1)
+        resultNameList      .grid(row=5, column=1)
 
-        btnPrice.grid(row=6, column=0)
-        btnPlot.grid(row=6, column=1)
-        labelResultDict.grid(row=6, column=2)
+        btnPrice            .grid(row=6, column=0)
+        btnPlot             .grid(row=6, column=1)
+        labelResultDict     .grid(row=6, column=2)
 
         self.pack(fill='x')
 
