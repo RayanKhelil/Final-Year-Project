@@ -636,18 +636,18 @@ def get_result_name_list():
 modelDict = {}
 resultDict = {}
 ##Buttons
-def create_model(name=get_model_name()):
+def create_model(name, ticker, startDate, endDate, mediaBlacklist, timeWindow, sentimentCalc, tokenAlgo, scaleType, smaRangeWindows, priceRangeWindow, modelAlgo, classInput):
     
-    sm = StandardModel(ticker = get_train_ticker(), startDate=get_train_start_date(), endDate=get_train_end_date(), mediaBlacklist=get_train_media_blacklist(), timeWindow=get_time_window(), sentimentCalc=get_sentiment_calc(), tokenAlgo=get_token_algo(),
-                        scaleType=get_scale_type(), smaRangeWindows=get_sma(), priceRangeWindow=get_price(), modelAlgo=get_model_algo(), classInput=get_class_input())
+    sm = StandardModel(ticker = ticker, startDate=startDate, endDate=endDate, mediaBlacklist=mediaBlacklist, timeWindow=timeWindow, sentimentCalc=sentimentCalc, tokenAlgo=tokenAlgo,
+                        scaleType=scaleType, smaRangeWindows=smaRangeWindows, priceRangeWindow=priceRangeWindow, modelAlgo=modelAlgo, classInput=classInput)
     modelDict.update({name: sm})
     
-def show_metrics(name=get_model_name()):
+def show_metrics(name):
     print(modelDict[name].metric)
     print("\n"+modelDict[name].time)
     print("\n"+modelDict[name].articleMetric)
     
-def get_model_results(resultName=get_result_name(), name=get_model_name_usage(), useStartDate=get_use_start_date(), useEndDate=get_use_end_date()):
+def get_model_results(resultName, name, useStartDate, useEndDate):
     temp_df = modelDict[name].use(useStartDate, useEndDate)
     resultDict.update({resultName: temp_df})
 

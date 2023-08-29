@@ -5,7 +5,7 @@ import logging
 
 
 #TODO custom tkinter implementation
-#TODO do correct widget types
+#TODO do correct widget types, group by bg colour?
 class AppGUI(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -48,7 +48,8 @@ class CreationPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         display_hotbar(self, master, bg_mc='#00FF00')
-        #TODO Model gets
+        
+        #TODO change temporary returns
 
         labelTicker = tk.Label(self, text = "Input ticker: ")
         trainTicker = tk.Text(self, height=1, width=12)
@@ -79,7 +80,8 @@ class CreationPage(tk.Frame):
         trainBlacklist = tk.Text(self, height=1, width=16)
         def get_train_media_blacklist():
             tempBlacklist = trainBlacklist.get("1.0", 'end-1c')
-            return tempBlacklist
+            return []
+            #return tempBlacklist
         
         labelSentimentCalc = tk.Label(self, text = "Enter sentiment calculation method:")
         trainSentimentCalc= tk.Text(self, height=1, width=12)
@@ -92,7 +94,8 @@ class CreationPage(tk.Frame):
         trainToken = tk.Text(self, height=1, width=12)
         def get_token_algo():
             tempToken = trainToken.get("1.0", 'end-1c')
-            return tempToken
+            return True
+            #return tempToken
         
         labelScale = tk.Label(self, text = "Enter scaletype")#RADIO
         trainScale = tk.Text(self, height=1, width=12)
@@ -104,12 +107,14 @@ class CreationPage(tk.Frame):
         trainSma = tk.Text(self, height=1, width=12)
         def get_sma():
             tempSma = trainSma.get("1.0", 'end-1c')
+            tempSma = tempSma.split(",")
             return tempSma
         
         labelPrice = tk.Label(self, text= "Enter pricerange window")
         trainPrice = tk.Text(self, height=1, width=12)
         def get_price():
             tempTPrice = trainPrice.get("1.0", 'end-1c')
+            tempTPrice = tempTPrice.split(",")
             return tempTPrice
 
         labelModelAlgo = tk.Label(self, text= "Enter ModelAlgo")
@@ -122,6 +127,7 @@ class CreationPage(tk.Frame):
         trainClasses = tk.Text(self, height=1, width=12)
         def get_class_input():
             tempClasses = trainClasses.get("1.0", 'end-1c')
+            tempClasses = tempClasses.split(",")
             return tempClasses
 
         labelModelName = tk.Label(self, text= "Enter model name")
@@ -131,8 +137,16 @@ class CreationPage(tk.Frame):
             return tempModelname
 
 
-        #TODO Buttons to use above inputs
+        
+        
+        btnCreate = tk.Button(self, text="Create model", command=lambda: app.create_model(name=get_model_name(), ticker=get_train_ticker(), startDate=get_train_start_date(), 
+                                                                                               endDate=get_train_end_date(), mediaBlacklist=get_train_media_blacklist(), timeWindow=get_time_window(), 
+                                                                                               sentimentCalc=get_sentiment_calc(), tokenAlgo=get_token_algo(), scaleType=get_scale_type(), 
+                                                                                               smaRangeWindows=get_sma(), priceRangeWindow=get_price(), modelAlgo=get_model_algo(), classInput=get_class_input()))
+        
+        btnMetrics = tk.Button(self, text="Show metrics", command=lambda: app.show_metrics(name=get_model_name()))
 
+        labelModelDict = tk.Label(self, text = app.modelDict.keys())
 
         #grid them start row=2
         labelTicker         .grid(row=2,column=0)
@@ -163,6 +177,10 @@ class CreationPage(tk.Frame):
         labelModelName      .grid(row=8,column=1)
         trainModelName      .grid(row=9,column=1)
 
+        btnCreate           .grid(row=10, column=0)
+        btnMetrics          .grid(row=11, column=0)
+        labelModelDict      .grid(row=10, column=1)
+
         self.pack(fill='x')
         
 class UsagePage(tk.Frame):
@@ -173,7 +191,7 @@ class UsagePage(tk.Frame):
         display_hotbar(self, master, bg_mu='#00FF00')
         
         
-        #TODO model usage to get model results
+        
         labelTicker = tk.Label(self, text = "Input ticker: ")
         useTicker = tk.Text(self, height=1, width=12)
         def get_use_ticker():
@@ -215,14 +233,22 @@ class UsagePage(tk.Frame):
             #print(tempNameList)
             return tempNameList
 
+        labelModelName = tk.Label(self, text= "Enter model name")
+        trainModelName = tk.Text(self, height=1, width=12)
+        def get_model_name():
+            tempModelname = trainModelName.get("1.0", 'end-1c')
+            return tempModelname
         
         #also logging has issue converting smth to string, what and why?
+
+
+        btnUseModel = tk.Button(self, text="Use Model", command=lambda: app.get_model_results(resultName=get_result_name(), name=get_model_name(), useStartDate=get_use_start_date(), useEndDate=get_use_end_date()))
 
         btnPrice = tk.Button(self, text="Get price results", command=lambda: app.get_price_results(resultName=get_result_name(), priceTicker=get_use_ticker(), priceTimeWindow=get_time_window_usage(), priceStartDate=get_use_start_date(), priceEndDate=get_use_end_date()))
         btnPlot = tk.Button(self, text="Plot results", command=lambda: app.plot_results(resultNameList = get_result_name_list()))
         
         labelResultDict = tk.Label(self, text = app.resultDict.keys())
-        
+        labelModelDict = tk.Label(self, text = app.modelDict.keys())
         
         labelTicker         .grid(row=2, column=0)
         useTicker           .grid(row=3, column=0)
@@ -236,10 +262,14 @@ class UsagePage(tk.Frame):
         resultName          .grid(row=5, column=0)
         labelResultNameList .grid(row=4, column=1)
         resultNameList      .grid(row=5, column=1)
+        labelModelName      .grid(row=5, column=2)
+        trainModelName      .grid(row=6, column=2)
 
         btnPrice            .grid(row=6, column=0)
         btnPlot             .grid(row=6, column=1)
-        labelResultDict     .grid(row=6, column=2)
+        btnUseModel         .grid(row=6, column=3)
+        labelResultDict     .grid(row=7, column=2)
+        labelModelDict      .grid(row=7, column=3)
 
         self.pack(fill='x')
 
